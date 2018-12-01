@@ -9,6 +9,7 @@ module.exports = function (app, express) {
   var results = await db.api.findAll()
   res.json(results)
  })
+ // display text in database
  app.get('/api/text/:id', async function (req, res) {
   // get the text based on an ID in the database
   var textId = req.params.id 
@@ -19,6 +20,22 @@ module.exports = function (app, express) {
   })
   res.json(queryResult)
  })
+// update text in the database
+ app.put('/api/text/:id', async function (req, res) {
+  // get the text based on an ID in the database
+  var text = req.body.text
+  var textId = req.params.id 
+  var queryResult = await db.api.findOne({
+      where: {
+          id: textId
+      }
+  })
+  queryResult.update({
+      text: text
+  })
+  res.json(queryResult)
+ })
+ // add text to the database
 app.post('/api/text', async function (req, res) {
     var text = req.body.text
     var queryResult = await db.api.create({
